@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+    {
+			"label": "Clear the folder that contain build files",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows": {
+				"command": "cmd /C if exist .\\build del /q .\\build\\*"
+			}
+		},
+		{
+      "dependsOn": "Clear the folder that contain build files",
+			"label": "Create a folder to contain build files",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows": {
+				"command": "cmd /C if not exist .\\build mkdir .\\build"
+			}
+		},
+		{
+			"dependsOn": "Create a folder to contain build files",
+			"type": "cppbuild",
+			"label": "Compile C++ using MSVC",
+			"command": "cl.exe",
+			"args": [
+				"/Zi",
+				"/EHsc",
+				"/nologo",
+				"/Fe:",
+				"${workspaceFolder}\\build\\${fileBasenameNoExtension}.exe",
+				"${fileDirname}\\*.cpp",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}\\build"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: cl.exe"
+		}
+	]
+}
